@@ -32,11 +32,12 @@ public class Crypto {
     public enum TypeFilesEnum {
         source, destination, addition
     }
+
     //Что бы не дублировать код, см. процедуру setFileFromMenu
     private static final Map<String, String> typeFilesMap = new HashMap<>();
 
     static {
-        typeFilesMap.put(TypeFilesEnum.source.toString() , "файл для шифрования");
+        typeFilesMap.put(TypeFilesEnum.source.toString(), "файл для шифрования");
         typeFilesMap.put(TypeFilesEnum.destination.toString(), "файл для расшифровки");
         typeFilesMap.put(TypeFilesEnum.addition.toString(), "дополнительный файл");
     }
@@ -102,12 +103,12 @@ public class Crypto {
         //try
         Scanner scanner1 = new Scanner(System.in);//{
         String value = typeFilesMap.get(typeFilesEnum.toString());
-        System.out.print("Введите "+value+ ": ");
+        System.out.print("Введите " + value + ": ");
         String filename = scanner1.nextLine();
         if (Files.notExists(Path.of(filename))) {
             System.out.println("Введен не существующий файл");
         } else {
-            if (typeFilesEnum.toString().equalsIgnoreCase("source")){
+            if (typeFilesEnum.toString().equalsIgnoreCase("source")) {
                 Crypto.setSourceFile(filename);
             } else if (typeFilesEnum.toString().equalsIgnoreCase("distinatiion")) {
                 Crypto.setDestinationFile(filename);
@@ -119,6 +120,7 @@ public class Crypto {
         //}
 
     }
+
     //задание криптографического ключа
     public static void setKeyFromMenu() {
         //try (
@@ -130,10 +132,10 @@ public class Crypto {
         } catch (InputMismatchException e) {
             System.out.println("ОШИБКА: криптографический ключ должен быть числом");
         }
-        if (key <=0) {
+        if (key <= 0) {
             System.out.println("Криптографический ключ должен быть больше 0");
         } else if (key >= ALPHABET_LIST.size()) {
-            System.out.println("Криптографический ключ должен быть меньше либо равным количеству символов в алфамите: "+ ALPHABET_LIST.size());
+            System.out.println("Криптографический ключ должен быть меньше либо равным количеству символов в алфамите: " + ALPHABET_LIST.size());
         }
 
         Crypto.setKey(key);
@@ -161,6 +163,8 @@ public class Crypto {
     private static String enCryptLine(String line, int key) throws InvalidKeyCrypt {
         char[] lineChar = line.toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
+        //Warning:(166, 9) 'for' loop replaceable with enhanced 'for'
+        //что это значит, как исправить?
         for (int i = 0; i < lineChar.length; i++) {
             stringBuilder.append(crypt(lineChar[i], -key));
         }
@@ -286,13 +290,12 @@ public class Crypto {
                 }
             }
             float t = (float) cntGl / cntSogl;
-            return Math.pow(t,2);
+            return Math.pow(t, 2);
         } catch (InvalidKeyCrypt invalidKeyCrypt) {
             invalidKeyCrypt.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return 0;
     }
 
@@ -305,7 +308,6 @@ public class Crypto {
             System.out.println("Передан не существующий файл для расшифровки: " + Crypto.getDestinationFile());
             return;
         }
-
         double minDeviation = 10; //Double.MAX_VALUE думаю избыточно
         //Получение
         double ishDeviation = Crypto.relationshipLetter(Crypto.additionalFile, 0);
@@ -318,12 +320,10 @@ public class Crypto {
         for (int i = 0, j = 1; i < ALPHABET_LIST.size(); i++, j++) {
             double curDeviation2 = Crypto.relationshipLetter(Crypto.getDestinationFile(), j);
             double delta = Math.abs(curDeviation2 - otkl);
-            if (minDeviation>delta) {
+            if (minDeviation > delta) {
                 minDeviation = delta;
                 key = j;
             }
-
-
         }
         System.out.println("Вероятный ключ: " + key);
         //System.out.printf("j=%d, delta=%f\n", j, delta);

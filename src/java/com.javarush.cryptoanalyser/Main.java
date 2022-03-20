@@ -7,10 +7,6 @@ import java.util.Scanner;
 
 public class Main {
     private final static String NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
-    private final static String NOT_TRUTH_NUMBER_CRYPT = "Не верное число криптографического ключа";
-
-
-
 
     public static void main(String[] args) {
         Crypto.setKey(15);
@@ -74,8 +70,6 @@ public class Main {
             } catch (NumberFormatException e) {
                 System.out.println(NOT_TRUTH_NUMBER_MENU);
             }
-
-
         } while (n != 10);
     }
 
