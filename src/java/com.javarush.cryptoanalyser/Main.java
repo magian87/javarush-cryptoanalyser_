@@ -22,8 +22,9 @@ public class Main {
             System.out.println("6 Зашифровать по ключу");
             System.out.println("7 Расшифровать по ключу");
             System.out.println("8 Взлом (Brute Force)");
-            System.out.println("9 Взлом (Статистический анализ)");
-            System.out.println("10 Выход");
+            System.out.println("9 Взлом (Статистический анализ по отношению гласных к согласным)");
+            System.out.println("10 Взлом (Статистический анализ по вхождению слов (рабочий вариант))");
+            System.out.println("11 Выход");
 
             System.out.print("Введите пункт меню: ");
             try {
@@ -31,7 +32,7 @@ public class Main {
                 n = Integer.parseInt(str);
                 System.out.println();
 
-                if (!(1 <= n && n <= 10)) {
+                if (!(1 <= n && n <= 11)) {
                     System.out.println(NOT_TRUTH_NUMBER_MENU);
                 } else {
                     switch (n) {
@@ -64,13 +65,16 @@ public class Main {
                         case 9:
                             Crypto.staticAnaliz();
                             break;
+                        case 10:
+                            Crypto.stAnaliz2();
+                            break;
                     }
 
                 }
             } catch (NumberFormatException e) {
                 System.out.println(NOT_TRUTH_NUMBER_MENU);
             }
-        } while (n != 10);
+        } while (n != 11);
     }
 
 }

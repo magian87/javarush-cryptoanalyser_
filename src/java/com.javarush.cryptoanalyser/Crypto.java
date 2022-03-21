@@ -12,6 +12,9 @@ public class Crypto {
     private final static String SOURCE_FILE = "/home/bulat/test/source.txt";
     private final static String DESTINATION_FILE = "/home/bulat/test/destination.txt";
     private final static String ADDITIONAL_FILE = "/home/bulat/test/add.txt";
+    //    private final static String SOURCE_FILE = "c:/test/source.txt";
+    //    private final static String DESTINATION_FILE = "c:/test/destination.txt";
+    //    private final static String ADDITIONAL_FILE = "c:/test/add.txt";
 
     private static final List<Character> ALPHABET_LIST = Arrays.asList('а', 'б', 'в',
             'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у',
@@ -329,4 +332,103 @@ public class Crypto {
         //System.out.printf("j=%d, delta=%f\n", j, delta);
         Crypto.cryptText(-key, Crypto.getDestinationFile(), Crypto.getSourceFile());
     }
+
+    //Получение множества уникальных слов на основе переданного текста (если offset!=0 то идет расшифровка)
+    private static HashSet<String> getUniqWords (String filename, int offset) {
+        if (Files.notExists(Path.of(filename))) {
+            System.out.println("Файл не существует " + filename);
+            return null;
+        }
+        HashSet<String> uniqWords = new HashSet<>();
+
+        try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(filename), Charset.defaultCharset())) {
+        //Во многих местах повторяется данный код:
+        //try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(filename), Charset.defaultCharset())) {
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String newLine2;
+                if (offset != 0) {
+                    newLine2 = enCryptLine(line, -offset);
+                } else {
+                    newLine2 = line;
+                }
+
+                String[] words = newLine2.toLowerCase().split(" ");
+                for (String word : words) {
+                    if (!word.matches(".*[.,-:?!].*")) { //Убираю из найденных слов те, в которых есть знаки препинания
+                        //как доработать данную регулярку, что бы не отбрасывались слова заканчивающиеся на знак препинания?
+                        uniqWords.add(word);
+                    }
+                }
+            }
+        } catch (InvalidKeyCrypt invalidKeyCrypt) {
+            invalidKeyCrypt.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return uniqWords;
+    }
+
+   /*
+     Расшифровка методом статистического анализа, вариант 2, рабочий
+     1.Анализ не зашифрованного текста того же автора, получаю список слов
+     2.В момент дешифрования получаю уникальные слова
+     3.Ключом будет тот вариант, в котором совпало наибольшее количество слов
+     Алгоритм работает безотказно, не понятно, почему при этом ключ отличается от
+     ключа шифрования
+    */
+    public static void stAnaliz2() {
+        HashSet <String> originalWords = getUniqWords(Crypto.getAdditionalFile(), 0);
+        System.out.println("Слова из исхоного файла: "+originalWords);
+        Map<Integer, Integer> unionMn = new HashMap<>();
+
+        for (int i = 0, j=1; i <ALPHABET_LIST.size() ; i++, j++) {
+            HashSet<String> currentWords = getUniqWords(Crypto.getDestinationFile(), j);
+            HashSet<String> orign = new HashSet<>(originalWords);
+
+            orign.retainAll(currentWords);
+            unionMn.put(j, orign.size());
+        }
+
+        int kkey=-1;
+        int maxValue=-1;
+
+        for (Map.Entry<Integer, Integer> map: unionMn.entrySet()) {
+            if (map.getValue()>maxValue) {
+                maxValue = map.getValue();
+                kkey = map.getKey();
+            }
+        }
+
+        System.out.printf("Ключ=%d, количество совпавших слов=%d\n", kkey, maxValue);
+        Crypto.cryptText(-key, Crypto.getDestinationFile(), Crypto.getSourceFile());
+    }
+
+     /*В нескольких местах используется данный код, отличие в том, что происходит в цикле while
+    Как избавиться от этого дублирования кода?
+    Я пока вижу только один варинат, объявляю enum и в зависимости от этого значения переданного
+    enum делаю анализ. но мне этот вариант не нравится. знаю, что в других языках можно передавать
+    процедуру в качестве параметра. в какую сторону искать?
+    Этот код не функциональный, написан для того, что бы вопрос подкрепить примером
+     */
+
+    /*
+    private static void test(String filename) {
+        try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(filename), Charset.defaultCharset())) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                //1 вариант Подсчет количества гласных и согласных букв
+                //2 варинат получение кол-ва слов
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Итоговый анализ ранее полученных данных
+    }
+    */
+
+
+
 }
