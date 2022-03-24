@@ -32,7 +32,7 @@ public class Encryption {
     //Что бы не дублировать код, см. процедуру setFileFromMenu
     private final Map<TypeFiles, String> typeFilesMap = new HashMap<>();
 
-     {
+    {
         setCryptographicKey(CRYPTOGRAPHIC_KEY_DEFAULT);
 
         typeFilesMap.put(TypeFiles.SOURCE, "файл для шифрования");
@@ -99,14 +99,12 @@ public class Encryption {
         //
         //        Почему нельзя использовать try -with-resources, появляются ошибки, как будто закрывается
         //        основной Scanner из модуля Main. Вот StackTrace. Что делать и как исправить?
-        //        Exception in thread "main" java.util.NoSuchElementException
-        //        at java.base/java.util.Scanner.throwFor(Scanner.java:937)
-        //        at java.base/java.util.Scanner.next(Scanner.java:1594)
-        //        at java.base/java.util.Scanner.nextInt(Scanner.java:2258)
-        //        at java.base/java.util.Scanner.nextInt(Scanner.java:2212)
-        //        at com.javarush.cryptoanalyser.Main.main(Main.java:41)
-        //try
-        Scanner scanner1 = new Scanner(System.in);//{
+        //        Exception in thread "main" java.util.NoSuchElementException: No line found
+        //        at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+        //        at com.javarush.cryptoanalyser.Main.main(Main.java:39)
+        //try(
+        Scanner scanner1 = new Scanner(System.in);
+        //){
         String value = typeFilesMap.get(typeFiles);
         System.out.print("Введите " + value + ": ");
         String filename = scanner1.nextLine();
@@ -120,7 +118,7 @@ public class Encryption {
             setAdditionalFile(filename);
         }
         setSourceFile(filename);
-
+        //}
     }
 
     //задание криптографического ключа
