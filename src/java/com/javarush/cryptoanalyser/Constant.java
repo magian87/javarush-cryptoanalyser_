@@ -8,6 +8,8 @@ public interface Constant {
     String DESTINATION_FILE = "files/destination.txt";
     String ADDITIONAL_FILE = "files/add.txt";
 
+    String ERR_NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
+
     String ERR_STATIC_ANALYSIS_BY_LETTER = "дешифрование методом статистического анализа по отношению гласных букв к согласным не будет выполнено.";
     String ERR_STATIC_ANALYSIS_BY_WORDS = "дешифрование методом статистического анализа по вхождению слов не будет выполнено.";
     String ERR_BRUTE_FORCE = "дешифрование методом BruteFore не будет выполнено.";

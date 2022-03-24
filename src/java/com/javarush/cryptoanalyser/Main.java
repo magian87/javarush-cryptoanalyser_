@@ -3,17 +3,19 @@ package com.javarush.cryptoanalyser;
 import com.javarush.cryptoanalyser.encryption.Encryption;
 import com.javarush.cryptoanalyser.enums.TypeFiles;
 import com.javarush.cryptoanalyser.exception.InvalidKeyCrypt;
+import com.javarush.cryptoanalyser.Constant;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+import static com.javarush.cryptoanalyser.Constant.ERR_NOT_TRUTH_NUMBER_MENU;
 import static com.javarush.cryptoanalyser.decryption.BruteForce.bruteForce;
 import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
 import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByLetter;
 import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByWords;
 
 public class Main {
-    private final static String NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
+
 
     public static void main(String[] args) {
         Encryption encryption = new Encryption();
@@ -40,7 +42,7 @@ public class Main {
                 System.out.println();
 
                 if (!(1 <= n && n <= 11)) {
-                    System.out.println(NOT_TRUTH_NUMBER_MENU);
+                    System.out.println(ERR_NOT_TRUTH_NUMBER_MENU);
                 } else {
                     switch (n) {
                         case 1 -> encryption.showParams();
@@ -56,7 +58,7 @@ public class Main {
                     }
                 }
             } catch (NumberFormatException e) {
-                System.out.println(NOT_TRUTH_NUMBER_MENU);
+                System.out.println(ERR_NOT_TRUTH_NUMBER_MENU);
             } catch (InvalidKeyCrypt | IOException ex) {
                 System.out.println(ex.getMessage());
             }
