@@ -1,12 +1,16 @@
 package com.javarush.cryptoanalyser;
 
+import com.javarush.cryptoanalyser.encryption.Encryption;
+import com.javarush.cryptoanalyser.enums.TypeFiles;
+import com.javarush.cryptoanalyser.exception.InvalidKeyCrypt;
+
 import java.io.IOException;
 import java.util.Scanner;
 
-import static com.javarush.cryptoanalyser.BruteForce.bruteForce;
-import static com.javarush.cryptoanalyser.EncryptionUtils.encryptionText;
-import static com.javarush.cryptoanalyser.StatisticalAnalysis.staticAnalizByLetter;
-import static com.javarush.cryptoanalyser.StatisticalAnalysis.staticAnalizByWords;
+import static com.javarush.cryptoanalyser.decryption.BruteForce.bruteForce;
+import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
+import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByLetter;
+import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByWords;
 
 public class Main {
     private final static String NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
@@ -41,19 +45,15 @@ public class Main {
                     switch (n) {
                         case 1 -> encryption.showParams();
                         case 2 -> encryption.setFileFromMenu(TypeFiles.SOURCE);
-
-                        //encryption.typeFiles.put("d","dd");
-                        //Он Map же final, почему можно добавлять элементы?
                         case 3 -> encryption.setFileFromMenu(TypeFiles.DESTINATION);
                         case 4 -> encryption.setFileFromMenu(TypeFiles.ADDITION);
                         case 5 -> encryption.setKeyFromMenu();
                         case 6 -> encryptionText(encryption.getCryptographicKey(), encryption.getSourceFile(), encryption.getDestinationFile());
                         case 7 -> encryptionText(-encryption.getCryptographicKey(), encryption.getDestinationFile(), encryption.getSourceFile());
                         case 8 -> bruteForce(encryption.getDestinationFile(), encryption.getSourceFile());
-                        case 9 -> staticAnalizByLetter(encryption.getDestinationFile(), encryption.getAdditionalFile(), encryption.getSourceFile());
-                        case 10 -> staticAnalizByWords(encryption.getSourceFile(), encryption.getDestinationFile(), encryption.getAdditionalFile());
+                        case 9 -> staticAnalysisByLetter(encryption.getDestinationFile(), encryption.getAdditionalFile(), encryption.getSourceFile());
+                        case 10 -> staticAnalysisByWords(encryption.getSourceFile(), encryption.getDestinationFile(), encryption.getAdditionalFile());
                     }
-
                 }
             } catch (NumberFormatException e) {
                 System.out.println(NOT_TRUTH_NUMBER_MENU);

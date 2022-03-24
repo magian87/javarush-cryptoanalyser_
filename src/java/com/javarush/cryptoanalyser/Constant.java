@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface Constant {
-    String SOURCE_FILE = "test/source.txt";
-    String DESTINATION_FILE = "test/destination.txt";
-    String ADDITIONAL_FILE = "test/add.txt";
+    String SOURCE_FILE = "files/source.txt";
+    String DESTINATION_FILE = "files/destination.txt";
+    String ADDITIONAL_FILE = "files/add.txt";
 
     String ERR_STATIC_ANALYSIS_BY_LETTER = "дешифрование методом статистического анализа по отношению гласных букв к согласным не будет выполнено.";
     String ERR_STATIC_ANALYSIS_BY_WORDS = "дешифрование методом статистического анализа по вхождению слов не будет выполнено.";
@@ -19,7 +19,7 @@ public interface Constant {
             'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'я', '.', ',', '«', '»',
             ':', '!', '?', ' ');
 
-    char[] LOWEL_LETTERS = {'а', 'у', 'о', 'ы', 'э', 'я', 'ю', 'ё', 'и', 'е'};
+    char[] VOWEL_LETTERS = {'а', 'у', 'о', 'ы', 'э', 'я', 'ю', 'ё', 'и', 'е'};
     char[] CONSONANT_LETTERS = {'б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ'};
 
 }

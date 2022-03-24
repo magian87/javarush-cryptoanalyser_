@@ -1,4 +1,6 @@
-package com.javarush.cryptoanalyser;
+package com.javarush.cryptoanalyser.encryption;
+
+import com.javarush.cryptoanalyser.exception.InvalidKeyCrypt;
 
 import java.io.*;
 import java.nio.file.Path;

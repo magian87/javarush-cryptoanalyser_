@@ -1,4 +1,6 @@
-package com.javarush.cryptoanalyser;
+package com.javarush.cryptoanalyser.encryption;
+
+import com.javarush.cryptoanalyser.enums.TypeFiles;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -123,7 +125,6 @@ public class Encryption {
 
     //задание криптографического ключа
     public void setKeyFromMenu() {
-        //try (
         Scanner scanner1 = new Scanner(System.in);//) {
         System.out.print("Введите криптографический ключ: ");
         int key = 0;
@@ -139,35 +140,5 @@ public class Encryption {
         }
 
         setCryptographicKey(key);
-        //}
     }
-
-
-
-
-
-     /*В нескольких местах используется данный код, отличие в том, что происходит в цикле while
-    Как избавиться от этого дублирования кода?
-    Я пока вижу только один варинат, объявляю enum и в зависимости от этого значения переданного
-    enum делаю анализ. но мне этот вариант не нравится. знаю, что в других языках можно передавать
-    процедуру в качестве параметра. в какую сторону искать?
-    Этот код не функциональный, написан для того, что бы вопрос подкрепить примером
-     */
-
-    /*
-    private static void test(String filename) {
-        try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(filename), Charset.defaultCharset())) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                //1 вариант Подсчет количества гласных и согласных букв
-                //2 варинат получение кол-ва слов
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //Итоговый анализ ранее полученных данных
-    }
-    */
-
-
 }
