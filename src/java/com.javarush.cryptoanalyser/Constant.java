@@ -8,11 +8,11 @@ public interface Constant {
     String DESTINATION_FILE = "test/destination.txt";
     String ADDITIONAL_FILE = "test/add.txt";
 
-    String ERR_STATIC_ANALIZ_BY_LETTER = "дешифрование методом статистического анализа по отношению гласных букв к согласным не будет выполнено.";
-    String ERR_STATIC_ANALIZ_BY_WORDS = "дешифрование методом статистического анализа по вхождению слов не будет выполнено.";
+    String ERR_STATIC_ANALYSIS_BY_LETTER = "дешифрование методом статистического анализа по отношению гласных букв к согласным не будет выполнено.";
+    String ERR_STATIC_ANALYSIS_BY_WORDS = "дешифрование методом статистического анализа по вхождению слов не будет выполнено.";
     String ERR_BRUTE_FORCE = "дешифрование методом BruteFore не будет выполнено.";
-    String ERR_CRYPTE = "шифрования не будет выполнено.";
-    String ERR_DECRYPTE = "процедура дешифрования не будет выполнено.";
+    String ERR_ENCRYPTION = "шифрование не будет выполнено.";
+    String ERR_DECRYPTION = "дешифрование не будет выполнено.";
 
     List<Character> ALPHABET_LIST = Arrays.asList('а', 'б', 'в',
             'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у',

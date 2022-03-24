@@ -3,10 +3,17 @@ package com.javarush.cryptoanalyser;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static com.javarush.cryptoanalyser.BruteForce.bruteForce;
+import static com.javarush.cryptoanalyser.EncryptionUtils.encryptionText;
+import static com.javarush.cryptoanalyser.StatisticalAnalysis.staticAnalizByLetter;
+import static com.javarush.cryptoanalyser.StatisticalAnalysis.staticAnalizByWords;
+
 public class Main {
     private final static String NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
 
     public static void main(String[] args) {
+        Encryption encryption = new Encryption();
+
         Scanner scanner = new Scanner(System.in);
         int n = 0;
         do {
@@ -32,19 +39,19 @@ public class Main {
                     System.out.println(NOT_TRUTH_NUMBER_MENU);
                 } else {
                     switch (n) {
-                        case 1 -> Crypto.showParams();
-                        case 2 -> Crypto.setFileFromMenu(TypeFiles.SOURCE);
+                        case 1 -> encryption.showParams();
+                        case 2 -> encryption.setFileFromMenu(TypeFiles.SOURCE);
 
-                        //Crypto.typeFiles.put("d","dd");
+                        //encryption.typeFiles.put("d","dd");
                         //Он Map же final, почему можно добавлять элементы?
-                        case 3 -> Crypto.setFileFromMenu(TypeFiles.DESTINATION);
-                        case 4 -> Crypto.setFileFromMenu(TypeFiles.ADDITION);
-                        case 5 -> Crypto.setKeyFromMenu();
-                        case 6 -> Crypto.cryptText(Crypto.getKey(), Crypto.getSourceFile(), Crypto.getDestinationFile());
-                        case 7 -> Crypto.cryptText(-Crypto.getKey(), Crypto.getDestinationFile(), Crypto.getSourceFile());
-                        case 8 -> Crypto.bruteForce(Crypto.getDestinationFile());
-                        case 9 -> Crypto.staticAnalizByLetter();
-                        case 10 -> Crypto.staticAnalizByWords();
+                        case 3 -> encryption.setFileFromMenu(TypeFiles.DESTINATION);
+                        case 4 -> encryption.setFileFromMenu(TypeFiles.ADDITION);
+                        case 5 -> encryption.setKeyFromMenu();
+                        case 6 -> encryptionText(encryption.getCryptographicKey(), encryption.getSourceFile(), encryption.getDestinationFile());
+                        case 7 -> encryptionText(-encryption.getCryptographicKey(), encryption.getDestinationFile(), encryption.getSourceFile());
+                        case 8 -> bruteForce(encryption.getDestinationFile(), encryption.getSourceFile());
+                        case 9 -> staticAnalizByLetter(encryption.getDestinationFile(), encryption.getAdditionalFile(), encryption.getSourceFile());
+                        case 10 -> staticAnalizByWords(encryption.getSourceFile(), encryption.getDestinationFile(), encryption.getAdditionalFile());
                     }
 
                 }
