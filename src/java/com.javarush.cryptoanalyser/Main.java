@@ -1,18 +1,14 @@
 package com.javarush.cryptoanalyser;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.InputMismatchException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     private final static String NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
 
     public static void main(String[] args) {
-        Crypto.setKey(15);
-
         Scanner scanner = new Scanner(System.in);
-        int n =0;
+        int n = 0;
         do {
             System.out.println("1 посмотреть пути к файлам для шифрования\\расшифровки\\криптографический ключ");
             System.out.println("2 Задать файл для шифрования");
@@ -36,43 +32,26 @@ public class Main {
                     System.out.println(NOT_TRUTH_NUMBER_MENU);
                 } else {
                     switch (n) {
-                        case 1:
-                            Crypto.showParams();
-                            break;
-                        case 2:
-                            Crypto.setFileFromMenu(Crypto.TypeFilesEnum.source);
-                            //Crypto.typeFiles.put("d","dd");
-                            //Он Map же final, почему можно добавлять элементы?
-                            break;
-                        case 3:
-                            Crypto.setFileFromMenu(Crypto.TypeFilesEnum.destination);
-                            break;
-                        case 4:
-                            Crypto.setFileFromMenu(Crypto.TypeFilesEnum.addition);
-                            break;
-                        case 5:
-                            Crypto.setKeyFromMenu();
-                            break;
-                        case 6:
-                            Crypto.cryptText(Crypto.getKey(), Crypto.getSourceFile(), Crypto.getDestinationFile());
-                            break;
-                        case 7:
-                            Crypto.cryptText(-Crypto.getKey(), Crypto.getDestinationFile(), Crypto.getSourceFile() );
-                            break;
-                        case 8:
-                            Crypto.BruteForce(Crypto.getDestinationFile());
-                            break;
-                        case 9:
-                            Crypto.staticAnaliz();
-                            break;
-                        case 10:
-                            Crypto.stAnaliz2();
-                            break;
+                        case 1 -> Crypto.showParams();
+                        case 2 -> Crypto.setFileFromMenu(TypeFiles.SOURCE);
+
+                        //Crypto.typeFiles.put("d","dd");
+                        //Он Map же final, почему можно добавлять элементы?
+                        case 3 -> Crypto.setFileFromMenu(TypeFiles.DESTINATION);
+                        case 4 -> Crypto.setFileFromMenu(TypeFiles.ADDITION);
+                        case 5 -> Crypto.setKeyFromMenu();
+                        case 6 -> Crypto.cryptText(Crypto.getKey(), Crypto.getSourceFile(), Crypto.getDestinationFile());
+                        case 7 -> Crypto.cryptText(-Crypto.getKey(), Crypto.getDestinationFile(), Crypto.getSourceFile());
+                        case 8 -> Crypto.bruteForce(Crypto.getDestinationFile());
+                        case 9 -> Crypto.staticAnalizByLetter();
+                        case 10 -> Crypto.staticAnalizByWords();
                     }
 
                 }
             } catch (NumberFormatException e) {
                 System.out.println(NOT_TRUTH_NUMBER_MENU);
+            } catch (InvalidKeyCrypt | IOException ex) {
+                System.out.println(ex.getMessage());
             }
         } while (n != 11);
     }
