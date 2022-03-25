@@ -1,15 +1,13 @@
 package com.javarush.cryptoanalyser;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 import com.javarush.cryptoanalyser.encryption.Encryption;
 import com.javarush.cryptoanalyser.enums.TypeFiles;
 import com.javarush.cryptoanalyser.exception.CustomNumberFormatException;
 import com.javarush.cryptoanalyser.exception.CryptographicKeyException;
-
-import java.io.IOException;
-import java.util.Scanner;
-
 import static com.javarush.cryptoanalyser.Constant.ERR_NOT_TRUTH_NUMBER_MENU;
-
 import static com.javarush.cryptoanalyser.decryption.BruteForce.bruteForce;
 import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
 import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByLetter;
