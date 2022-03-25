@@ -2,7 +2,7 @@ package com.javarush.cryptoanalyser.decryption;
 
 
 
-import com.javarush.cryptoanalyser.exception.InvalidKeyCrypt;
+import com.javarush.cryptoanalyser.exception.CryptographicKeyException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import static com.javarush.cryptoanalyser.CommonUtils.existFile;
+import static com.javarush.cryptoanalyser.CommonUtils.*;
 import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionLine;
 import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
 import static com.javarush.cryptoanalyser.Constant.*;
@@ -21,7 +21,7 @@ import static com.javarush.cryptoanalyser.Constant.*;
 public class StatisticalAnalysis {
 
     //Получение отношения кол-ва гласных букв к количеству согласных возведенных во 2 степень
-    public static double relationshipLetter(String fileName, int offset) throws IOException, InvalidKeyCrypt {
+    public static double relationshipLetter(String fileName, int offset) throws IOException, CryptographicKeyException {
         existFile(fileName, ERR_STATIC_ANALYSIS_BY_LETTER);
         try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(fileName), Charset.defaultCharset())) {
             int cntLowelLetters = 0;
@@ -60,7 +60,7 @@ public class StatisticalAnalysis {
     }
 
     //Расшифровка по методу статистического анализа отношения количеста глассных и согласных букв
-    public static void staticAnalysisByLetter(String sourceFile, String additionFile, String destinationFile) throws InvalidKeyCrypt, IOException {
+    public static void staticAnalysisByLetter(String sourceFile, String additionFile, String destinationFile) throws CryptographicKeyException, IOException {
         existFile(additionFile, ERR_STATIC_ANALYSIS_BY_LETTER);
         existFile(sourceFile, ERR_STATIC_ANALYSIS_BY_LETTER);
 
@@ -86,7 +86,7 @@ public class StatisticalAnalysis {
     }
 
     //Получение множества уникальных слов на основе переданного текста (если offset!=0 то идет расшифровка)
-    private static HashSet<String> getUniqWords(String fileName, int offset) throws InvalidKeyCrypt, IOException {
+    private static HashSet<String> getUniqWords(String fileName, int offset) throws CryptographicKeyException, IOException {
         existFile(fileName, ERR_STATIC_ANALYSIS_BY_WORDS);
 
         HashSet<String> uniqWords = new HashSet<>();
@@ -100,14 +100,7 @@ public class StatisticalAnalysis {
                 } else {
                     modifiedLine = line;
                 }
-
-                String[] words = modifiedLine.toLowerCase().split(" ");
-                for (String word : words) {
-                    if (!word.matches(".*[.,-:?!].*")) { //Убираю из найденных слов те, в которых есть знаки препинания
-                        //как доработать данную регулярку, что бы не отбрасывались слова заканчивающиеся на знак препинания?
-                        uniqWords.add(word);
-                    }
-                }
+                uniqWords.addAll(divideStringByWords(modifiedLine));
             }
         } catch (IOException e) {
             throw new IOException("Произошла ошибка при работе с файлом: " + fileName);
@@ -123,7 +116,7 @@ public class StatisticalAnalysis {
       3.Ключом будет тот вариант, в котором совпало наибольшее количество слов
       Алгоритм работает безотказно, не понятно, почему при этом ключ отличается от ключа шифрования
      */
-    public static void staticAnalysisByWords(String sourceFile, String destinationFile, String additionFile) throws InvalidKeyCrypt, IOException {
+    public static void staticAnalysisByWords(String sourceFile, String destinationFile, String additionFile) throws CryptographicKeyException, IOException {
         HashSet<String> originalWords = getUniqWords(additionFile, 0);
         Map<Integer, Integer> words = new HashMap<>();
 
@@ -136,18 +129,10 @@ public class StatisticalAnalysis {
             words.put(j, wordsFromAdditionText.size());
         }
 
-        int kkey = Integer.MIN_VALUE;
-        int matchedWords = Integer.MIN_VALUE;
+        int[] keyValue = findKeyValueInMapByMaxValue(words);
 
-        for (Map.Entry<Integer, Integer> map : words.entrySet()) {
-            if (map.getValue() > matchedWords) {
-                matchedWords = map.getValue();
-                kkey = map.getKey();
-            }
-        }
-
-        System.out.printf("Найден ключ шифрования=%d, количество совпавших слов=%d\n", kkey, matchedWords);
-        encryptionText(kkey, destinationFile, sourceFile);
+        System.out.printf("Найден ключ шифрования=%d, количество совпавших слов=%d\n", keyValue[0], keyValue[1]);
+        encryptionText(keyValue[0], destinationFile, sourceFile);
     }
 
 

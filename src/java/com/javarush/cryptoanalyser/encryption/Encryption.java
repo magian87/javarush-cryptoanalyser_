@@ -1,6 +1,7 @@
 package com.javarush.cryptoanalyser.encryption;
 
 import com.javarush.cryptoanalyser.enums.TypeFiles;
+import com.javarush.cryptoanalyser.exception.CustomNumberFormatException;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -95,19 +96,10 @@ public class Encryption {
 
 
     //Задание файлов используемых файлов
-    public void setFileFromMenu(TypeFiles typeFiles) throws FileNotFoundException {
-        //
-        //        Почему нельзя использовать try -with-resources, появляются ошибки, как будто закрывается
-        //        основной Scanner из модуля Main. Вот StackTrace. Что делать и как исправить?
-        //        Exception in thread "main" java.util.NoSuchElementException: No line found
-        //        at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
-        //        at com.javarush.cryptoanalyser.Main.main(Main.java:39)
-        //try(
-        Scanner scanner1 = new Scanner(System.in);
-        //){
+    public void setFileFromMenu(Scanner scanner, TypeFiles typeFiles) throws FileNotFoundException {
         String value = typeFilesMap.get(typeFiles);
         System.out.print("Введите " + value + ": ");
-        String filename = scanner1.nextLine();
+        String filename = scanner.nextLine();
         existFile(filename, "новый файл для " + value + " не будет задан.");
 
         if (typeFiles == TypeFiles.SOURCE) {
@@ -118,25 +110,22 @@ public class Encryption {
             setAdditionalFile(filename);
         }
         setSourceFile(filename);
-        //}
     }
 
     //задание криптографического ключа
-    public void setKeyFromMenu() {
-        Scanner scanner1 = new Scanner(System.in);//) {
+    public void setKeyFromMenu(Scanner scanner) throws CustomNumberFormatException {
         System.out.print("Введите криптографический ключ: ");
-        int key = 0;
+        int key;
         try {
-            key = scanner1.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("ОШИБКА: криптографический ключ должен быть числом");
+            key = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            throw new CustomNumberFormatException("ОШИБКА: криптографический ключ должен быть числом");
         }
         if (key <= 0) {
             System.out.println("Криптографический ключ должен быть больше 0");
         } else if (key >= ALPHABET_LIST.size()) {
             System.out.println("Криптографический ключ должен быть меньше либо равным количеству символов в алфамите: " + ALPHABET_LIST.size());
         }
-
         setCryptographicKey(key);
     }
 }

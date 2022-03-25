@@ -2,8 +2,8 @@ package com.javarush.cryptoanalyser;
 
 import com.javarush.cryptoanalyser.encryption.Encryption;
 import com.javarush.cryptoanalyser.enums.TypeFiles;
-import com.javarush.cryptoanalyser.exception.InvalidKeyCrypt;
-import com.javarush.cryptoanalyser.Constant;
+import com.javarush.cryptoanalyser.exception.CustomNumberFormatException;
+import com.javarush.cryptoanalyser.exception.CryptographicKeyException;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,6 +13,7 @@ import static com.javarush.cryptoanalyser.decryption.BruteForce.bruteForce;
 import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
 import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByLetter;
 import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByWords;
+
 
 public class Main {
 
@@ -45,10 +46,10 @@ public class Main {
                     } else {
                         switch (n) {
                             case 1 -> encryption.showParams();
-                            case 2 -> encryption.setFileFromMenu(TypeFiles.SOURCE);
-                            case 3 -> encryption.setFileFromMenu(TypeFiles.DESTINATION);
-                            case 4 -> encryption.setFileFromMenu(TypeFiles.ADDITION);
-                            case 5 -> encryption.setKeyFromMenu();
+                            case 2 -> encryption.setFileFromMenu(scanner, TypeFiles.SOURCE);
+                            case 3 -> encryption.setFileFromMenu(scanner, TypeFiles.DESTINATION);
+                            case 4 -> encryption.setFileFromMenu(scanner, TypeFiles.ADDITION);
+                            case 5 -> encryption.setKeyFromMenu(scanner);
                             case 6 -> encryptionText(encryption.getCryptographicKey(), encryption.getSourceFile(), encryption.getDestinationFile());
                             case 7 -> encryptionText(-encryption.getCryptographicKey(), encryption.getDestinationFile(), encryption.getSourceFile());
                             case 8 -> bruteForce(encryption.getDestinationFile(), encryption.getSourceFile());
@@ -58,7 +59,7 @@ public class Main {
                     }
                 } catch (NumberFormatException e) {
                     System.out.println(ERR_NOT_TRUTH_NUMBER_MENU);
-                } catch (InvalidKeyCrypt | IOException ex) {
+                } catch (CryptographicKeyException | IOException | CustomNumberFormatException ex) {
                     System.out.println(ex.getMessage());
                 }
             } while (n != 11);

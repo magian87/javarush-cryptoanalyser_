@@ -1,6 +1,6 @@
 package com.javarush.cryptoanalyser.encryption;
 
-import com.javarush.cryptoanalyser.exception.InvalidKeyCrypt;
+import com.javarush.cryptoanalyser.exception.CryptographicKeyException;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -8,17 +8,18 @@ import java.nio.file.Path;
 import static com.javarush.cryptoanalyser.CommonUtils.existFile;
 import static com.javarush.cryptoanalyser.Constant.*;
 
+
 public class EncryptionUtils {
 
     //Процедура шифрования\дешифрования символа
-    public static Character encryptionChar(char ch, int offset) throws InvalidKeyCrypt {
+    public static Character encryptionChar(char ch, int offset) throws CryptographicKeyException {
         int indexOf = ALPHABET_LIST.indexOf(ch);
         if (indexOf != -1) {
 
             //Если offset>словаря обработать эту ситуациию
             int delta = (indexOf + offset) % ALPHABET_LIST.size();
             if (offset == 0) {
-                throw new InvalidKeyCrypt("Задан не верный ключ шифрования: " + offset);
+                throw new CryptographicKeyException("Задан не верный ключ шифрования: " + offset);
             } else if (offset < 0 && delta < 0) {
                 delta = ALPHABET_LIST.size() + delta;
             }
@@ -28,7 +29,7 @@ public class EncryptionUtils {
     }
 
     //Процедура шифрования\дешифрования строки
-    public static String encryptionLine(String line, int offset) throws InvalidKeyCrypt {
+    public static String encryptionLine(String line, int offset) throws CryptographicKeyException {
         char[] lineChar = line.toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
         for (char c : lineChar) {
@@ -38,7 +39,7 @@ public class EncryptionUtils {
     }
 
     //Процедура шифрования\дешифрования текста
-    public static void encryptionText(int offset, String sourceFile, String destinationFile) throws IOException, InvalidKeyCrypt {
+    public static void encryptionText(int offset, String sourceFile, String destinationFile) throws IOException, CryptographicKeyException {
         if (offset>0) {
             existFile(sourceFile, ERR_ENCRYPTION);
         } else {
