@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import static com.javarush.cryptoanalyser.Constant.ERR_NOT_TRUTH_NUMBER_MENU;
+
 import static com.javarush.cryptoanalyser.decryption.BruteForce.bruteForce;
 import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
 import static com.javarush.cryptoanalyser.decryption.StatisticalAnalysis.staticAnalysisByLetter;

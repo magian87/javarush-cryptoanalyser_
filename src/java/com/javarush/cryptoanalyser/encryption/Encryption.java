@@ -30,7 +30,6 @@ public class Encryption {
     private String additionalFile;
 
 
-    //Что бы не дублировать код, см. процедуру setFileFromMenu
     private final Map<TypeFiles, String> typeFilesMap = new HashMap<>();
 
     {
@@ -43,8 +42,6 @@ public class Encryption {
         setSourceFile(Path.of("").toAbsolutePath().resolve(Path.of(SOURCE_FILE)).toString());
         setDestinationFile(Path.of("").toAbsolutePath().resolve(Path.of(DESTINATION_FILE)).toString());
         setAdditionalFile(Path.of("").toAbsolutePath().resolve(Path.of(ADDITIONAL_FILE)).toString());
-
-
     }
 
     public int getCryptographicKey() {
@@ -95,7 +92,7 @@ public class Encryption {
     }
 
 
-    //Задание файлов используемых файлов
+    //Задание используемых файлов
     public void setFileFromMenu(Scanner scanner, TypeFiles typeFiles) throws FileNotFoundException {
         String value = typeFilesMap.get(typeFiles);
         System.out.print("Введите " + value + ": ");

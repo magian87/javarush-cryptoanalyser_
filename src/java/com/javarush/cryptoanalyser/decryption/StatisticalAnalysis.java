@@ -1,7 +1,6 @@
 package com.javarush.cryptoanalyser.decryption;
 
 
-
 import com.javarush.cryptoanalyser.exception.CryptographicKeyException;
 
 import java.io.BufferedReader;
@@ -14,8 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import static com.javarush.cryptoanalyser.CommonUtils.*;
-import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionLine;
-import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.encryptionText;
+import static com.javarush.cryptoanalyser.encryption.EncryptionUtils.*;
 import static com.javarush.cryptoanalyser.Constant.*;
 
 public class StatisticalAnalysis {
@@ -24,7 +22,7 @@ public class StatisticalAnalysis {
     public static double relationshipLetter(String fileName, int offset) throws IOException, CryptographicKeyException {
         existFile(fileName, ERR_STATIC_ANALYSIS_BY_LETTER);
         try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(fileName), Charset.defaultCharset())) {
-            int cntLowelLetters = 0;
+            int cntVowelLetters = 0;
             int cntConsonantLetters = 0;
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -34,25 +32,10 @@ public class StatisticalAnalysis {
                 } else {
                     modifiedLine = line;
                 }
-                char[] arr = modifiedLine.toLowerCase().toCharArray();
-
-                for (char ch : arr) {
-                    for (char consonantLetter : CONSONANT_LETTERS) {
-                        if (ch == consonantLetter) {
-                            cntConsonantLetters++;
-                            break;
-                        }
-                    }
-
-                    for (char vowelLetter : VOWEL_LETTERS) {
-                        if (ch == vowelLetter) {
-                            cntLowelLetters++;
-                            break;
-                        }
-                    }
-                }
+                cntVowelLetters += countingLettersByLine(modifiedLine, VOWEL_LETTERS);
+                cntConsonantLetters += countingLettersByLine(modifiedLine, CONSONANT_LETTERS);
             }
-            float t = (float) cntLowelLetters / cntConsonantLetters;
+            float t = (float) cntVowelLetters / cntConsonantLetters;
             return Math.pow(t, 2);
         } catch (IOException e) {
             throw new IOException("Произошла ошибка при работе с файлом: " + fileName);
@@ -65,12 +48,13 @@ public class StatisticalAnalysis {
         existFile(sourceFile, ERR_STATIC_ANALYSIS_BY_LETTER);
 
         double minDeviation = Double.MAX_VALUE;
+        int key = Integer.MIN_VALUE;
         //Получение
-        double ishDeviation = relationshipLetter (additionFile, 0);
+        double ishDeviation = relationshipLetter(additionFile, 0);
         double curDeviation = relationshipLetter(sourceFile, 0);
 
         double deviation = Math.abs(ishDeviation - curDeviation);
-        int key = 0;
+
 
         for (int i = 0, j = 1; i < ALPHABET_LIST.size(); i++, j++) {
             double curDeviation2 = relationshipLetter(sourceFile, j);
@@ -80,8 +64,7 @@ public class StatisticalAnalysis {
                 key = j;
             }
         }
-        System.out.printf("Вероятный ключ: %d, среднеквадратичное отклонение: %f\n", key, minDeviation );
-        //System.out.printf("j=%d, delta=%f\n", j, delta);
+        System.out.printf("Вероятный ключ: %d, среднеквадратичное отклонение: %f\n", key, minDeviation);
         encryptionText(-key, sourceFile, destinationFile);
     }
 

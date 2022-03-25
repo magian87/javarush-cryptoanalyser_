@@ -47,7 +47,6 @@ public class CommonUtils {
             } else {
                 wordWithoutPunctuationMark = word;
             }
-
             //Убираю из найденных слов те, в которых есть знаки препинания
             if (!wordWithoutPunctuationMark.matches(".*[.,:;?!)(\"-«»-].*")) {
                 words.add(wordWithoutPunctuationMark);

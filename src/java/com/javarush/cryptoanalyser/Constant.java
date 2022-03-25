@@ -9,7 +9,6 @@ public class Constant {
     public static final String ADDITIONAL_FILE = "files/add.txt";
 
     public static final String ERR_NOT_TRUTH_NUMBER_MENU = "Не верный пункт меню, введите корректное число";
-
     public static final String ERR_STATIC_ANALYSIS_BY_LETTER = "дешифрование методом статистического анализа по отношению гласных букв к согласным не будет выполнено.";
     public static final String ERR_STATIC_ANALYSIS_BY_WORDS = "дешифрование методом статистического анализа по вхождению слов не будет выполнено.";
     public static final String ERR_BRUTE_FORCE = "дешифрование методом BruteFore не будет выполнено.";
@@ -21,7 +20,7 @@ public class Constant {
             'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'я', '.', ',', '«', '»',
             ':', '!', '?', ' ');
 
-    public static final List<Character> PUNCTUATION_MARKS = Arrays.asList('.',',',':',';','?','!',')','(','«','»','"','-');
+    public static final List<Character> PUNCTUATION_MARKS = Arrays.asList('.', ',', ':', ';', '?', '!', ')', '(', '«', '»', '"', '-');
 
 
     public static final char[] VOWEL_LETTERS = {'а', 'у', 'о', 'ы', 'э', 'я', 'ю', 'ё', 'и', 'е'};

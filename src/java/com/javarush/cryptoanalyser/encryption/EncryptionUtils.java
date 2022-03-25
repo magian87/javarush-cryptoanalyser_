@@ -15,8 +15,6 @@ public class EncryptionUtils {
     public static Character encryptionChar(char ch, int offset) throws CryptographicKeyException {
         int indexOf = ALPHABET_LIST.indexOf(ch);
         if (indexOf != -1) {
-
-            //Если offset>словаря обработать эту ситуациию
             int delta = (indexOf + offset) % ALPHABET_LIST.size();
             if (offset == 0) {
                 throw new CryptographicKeyException("Задан не верный ключ шифрования: " + offset);
@@ -40,7 +38,7 @@ public class EncryptionUtils {
 
     //Процедура шифрования\дешифрования текста
     public static void encryptionText(int offset, String sourceFile, String destinationFile) throws IOException, CryptographicKeyException {
-        if (offset>0) {
+        if (offset > 0) {
             existFile(sourceFile, ERR_ENCRYPTION);
         } else {
             existFile(destinationFile, ERR_DECRYPTION);
@@ -51,18 +49,32 @@ public class EncryptionUtils {
         ) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                bufferedWriter.write(encryptionLine(line,offset)+"\n");
+                bufferedWriter.write(encryptionLine(line, offset) + "\n");
             }
         } catch (IOException e) {
             throw new IOException("Произошла ошибка при работе с файлом\\файллами: "
                     + Path.of(sourceFile).getFileName() + ", "
                     + Path.of(destinationFile).getFileName());
         }
-        if (offset>0) {
-            System.out.println("Файл был успешно зашифрован в файл: "+ destinationFile);
+        if (offset > 0) {
+            System.out.println("Файл был успешно зашифрован в файл: " + destinationFile);
         } else {
-            System.out.println("Файл был успешно дешифрован в файл: "+ destinationFile);
+            System.out.println("Файл был успешно дешифрован в файл: " + destinationFile);
         }
     }
 
+    public static int countingLettersByLine(String line, char[] letters) {
+        int result = 0;
+        char[] arr = line.toLowerCase().toCharArray();
+
+        for (char ch : arr) {
+            for (char letter : letters) {
+                if (ch == letter) {
+                    result++;
+                    break; //Выхожу, т.к. уже нашел символ в массиве символов
+                }
+            }
+        }
+        return result;
+    }
 }
